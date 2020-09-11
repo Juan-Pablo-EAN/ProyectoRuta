@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static paquete.Principal.base;
 
@@ -19,6 +21,21 @@ public class ParaEliminar extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
+        setSize(483, 365);
+        
+        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        
+        Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
+                LabelFondo.getHeight(), Image.SCALE_DEFAULT));
+        
+        LabelFondo.setIcon(icono);
+        this.repaint();
+        
+        ImageIcon logo = new ImageIcon("src/paquete/icono.png");
+        Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
+                LabeLogo.getHeight(), Image.SCALE_DEFAULT));
+        LabeLogo.setIcon(icono_logo);
+        this.repaint();
     }
     
     @Override
@@ -31,90 +48,64 @@ public class ParaEliminar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        deleteCode = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         eliminar = new javax.swing.JButton();
         volver = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        deleteCode = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        LabeLogo = new javax.swing.JLabel();
+        LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Eliminar un estudiante");
         setIconImage(getIconImage());
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Ruta 2020");
-
-        jLabel2.setText("Ingresa el código del estudiante para eliminar:");
-
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Código:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
 
+        eliminar.setBackground(new java.awt.Color(255, 255, 255));
+        eliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         eliminar.setText("Eliminar");
         eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminarActionPerformed(evt);
             }
         });
+        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 130, 50));
 
+        volver.setBackground(new java.awt.Color(255, 255, 255));
+        volver.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         volver.setText("Atrás");
         volver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 volverActionPerformed(evt);
             }
         });
+        getContentPane().add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 130, 50));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 11, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(deleteCode, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(eliminar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(volver, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(98, 98, 98))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(eliminar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(volver)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Ingresa el código del estudiante para eliminar:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+
+        deleteCode.setBackground(new java.awt.Color(204, 255, 255));
+        deleteCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteCodeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(deleteCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180, 113, -1));
+
+        jLabel1.setFont(new java.awt.Font("Bradley Hand ITC", 1, 48)); // NOI18N
+        jLabel1.setText("Ruta 2020");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
+        getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 60, 60));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 370));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
-        hide();
-        Principal inicio = new Principal();
-        inicio.setVisible(true);
-    }//GEN-LAST:event_volverActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         try {
@@ -124,6 +115,16 @@ public class ParaEliminar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "¡Ocurrió un error!");
         }
     }//GEN-LAST:event_eliminarActionPerformed
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        hide();
+        Principal inicio = new Principal();
+        inicio.setVisible(true);
+    }//GEN-LAST:event_volverActionPerformed
+
+    private void deleteCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteCodeActionPerformed
 
     public static void main(String args[]) {
 
@@ -154,6 +155,8 @@ public class ParaEliminar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LabeLogo;
+    private javax.swing.JLabel LabelFondo;
     private javax.swing.JTextField deleteCode;
     private javax.swing.JButton eliminar;
     private javax.swing.JLabel jLabel1;

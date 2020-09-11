@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static paquete.Principal.base; //PARA IMPORTAR LA BASE DE DATOS
 
@@ -21,9 +23,27 @@ public class Listas extends javax.swing.JFrame {
 
     public Listas() {
         initComponents();
+        int cuantos = Principal.total;
         this.setVisible(false);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        setSize(724, 670);
+        
+        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        
+        Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
+                LabelFondo.getHeight(), Image.SCALE_DEFAULT));
+        
+        LabelFondo.setIcon(icono);
+        this.repaint();
+        
+        ImageIcon logo = new ImageIcon("src/paquete/icono.png");
+        Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
+                LabeLogo.getHeight(), Image.SCALE_DEFAULT));
+        LabeLogo.setIcon(icono_logo);
+        this.repaint();
+        
+        verCantidad.setText("Actualmente viajan " + cuantos + " estudiantes en total");
     }
     
     @Override
@@ -43,8 +63,6 @@ public class Listas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        cinco30 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         seis30 = new javax.swing.JButton();
         una30 = new javax.swing.JButton();
@@ -52,25 +70,22 @@ public class Listas extends javax.swing.JFrame {
         atras = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Area = new javax.swing.JTextArea();
+        cinco30 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        LabeLogo = new javax.swing.JLabel();
+        verCantidad = new javax.swing.JLabel();
+        LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lista de Estudiantes");
         setIconImage(getIconImage());
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setText("Ruta 2020");
-
-        cinco30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        cinco30.setText("Lista 5:30 am");
-        cinco30.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cinco30ActionPerformed(evt);
-            }
-        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("Selecciona la lista según la hora que deseas ver:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
 
+        seis30.setBackground(new java.awt.Color(255, 255, 255));
         seis30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         seis30.setText("Lista 6:30 am");
         seis30.addActionListener(new java.awt.event.ActionListener() {
@@ -78,7 +93,9 @@ public class Listas extends javax.swing.JFrame {
                 seis30ActionPerformed(evt);
             }
         });
+        getContentPane().add(seis30, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 140, 60));
 
+        una30.setBackground(new java.awt.Color(255, 255, 255));
         una30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         una30.setText("Lista 1:30 pm");
         una30.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +103,9 @@ public class Listas extends javax.swing.JFrame {
                 una30ActionPerformed(evt);
             }
         });
+        getContentPane().add(una30, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, 140, 60));
 
+        dos30.setBackground(new java.awt.Color(255, 255, 255));
         dos30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         dos30.setText("Lista 2:30 pm");
         dos30.addActionListener(new java.awt.event.ActionListener() {
@@ -94,7 +113,9 @@ public class Listas extends javax.swing.JFrame {
                 dos30ActionPerformed(evt);
             }
         });
+        getContentPane().add(dos30, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 140, 60));
 
+        atras.setBackground(new java.awt.Color(255, 255, 255));
         atras.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         atras.setText("Atras");
         atras.addActionListener(new java.awt.event.ActionListener() {
@@ -102,91 +123,38 @@ public class Listas extends javax.swing.JFrame {
                 atrasActionPerformed(evt);
             }
         });
+        getContentPane().add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 540, 130, 60));
 
         Area.setEditable(false);
+        Area.setBackground(new java.awt.Color(204, 255, 255));
         Area.setColumns(20);
         Area.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Area.setRows(5);
         jScrollPane1.setViewportView(Area);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(206, 206, 206))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(atras))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cinco30)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(seis30)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(una30)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dos30))
-                            .addComponent(jScrollPane1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addComponent(jLabel2)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cinco30)
-                    .addComponent(seis30)
-                    .addComponent(una30)
-                    .addComponent(dos30))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(atras)
-                .addContainerGap())
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 610, 300));
+
+        cinco30.setBackground(new java.awt.Color(255, 255, 255));
+        cinco30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cinco30.setText("Lista 5:30 am");
+        cinco30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cinco30ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cinco30, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 140, 60));
+
+        jLabel3.setFont(new java.awt.Font("Bradley Hand ITC", 1, 48)); // NOI18N
+        jLabel3.setText("Ruta 2020");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+        getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 60, 60));
+
+        verCantidad.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(verCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 560, 440, 30));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 670));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
-        hide(); //PARA ESCONDER LA VENTANA GUARDANDO LA INFO EN MEMORIA
-        Principal inicio = new Principal();
-        inicio.setVisible(true);
-    }//GEN-LAST:event_atrasActionPerformed
-
-    private void cinco30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cinco30ActionPerformed
-        String info5 = "";
-
-        try {
-            for (Estudiante student : base.queryForAll()) { //.queryAll() para mostrar o recorrer toda la info en la base de datos
-                int hora = student.getAmanecer();
-                if (hora == 530) {
-                    info5 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                            + "  |  " + student.getAcudiente()+ "  |\n\n";
-                }
-                if (hora == 0) { //ACA NO PUEDO PONER UN ELSE PORQUE ME SALE EL MENSAJE COMO SI NO HUBIERA ESTUDIANTES A ESTA HORA
-                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 5:30 am");
-                    return;
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Area.setText(info5);
-    }//GEN-LAST:event_cinco30ActionPerformed
 
     private void seis30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seis30ActionPerformed
 
@@ -197,7 +165,7 @@ public class Listas extends javax.swing.JFrame {
                 int hora = student.getAmanecer();
                 if (hora == 630) {
                     info6 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                            + "  |  " + student.getAcudiente() + "  |\n\n";
+                    + "  |  " + student.getAcudiente() + "  |\n\n";
                 }
                 if (hora == 0) {
                     JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 6:30 am");
@@ -219,7 +187,7 @@ public class Listas extends javax.swing.JFrame {
                 int hora = student.getTarde();
                 if (hora == 130) {
                     info1 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                            + "  |  " + student.getAcudiente() + "  |\n\n";
+                    + "  |  " + student.getAcudiente() + "  |\n\n";
                 }
                 if (hora == 0) {
                     JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 1:30 pm");
@@ -237,11 +205,11 @@ public class Listas extends javax.swing.JFrame {
         String info2 = "";
 
         try {
-            for (Estudiante student : base.queryForAll()) { 
+            for (Estudiante student : base.queryForAll()) {
                 int hora = student.getTarde();
                 if (hora == 230) {
                     info2 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                            + "  |  " + student.getAcudiente() + "  |\n\n";
+                    + "  |  " + student.getAcudiente() + "  |\n\n";
                 }
                 if (hora == 0) {
                     JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 2:30 pm");
@@ -253,6 +221,33 @@ public class Listas extends javax.swing.JFrame {
         }
         Area.setText(info2);
     }//GEN-LAST:event_dos30ActionPerformed
+
+    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
+        hide(); //PARA ESCONDER LA VENTANA GUARDANDO LA INFO EN MEMORIA
+        Principal inicio = new Principal();
+        inicio.setVisible(true);
+    }//GEN-LAST:event_atrasActionPerformed
+
+    private void cinco30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cinco30ActionPerformed
+        String info5 = "";
+
+        try {
+            for (Estudiante student : base.queryForAll()) { //.queryAll() para mostrar o recorrer toda la info en la base de datos
+                int hora = student.getAmanecer();
+                if (hora == 530) {
+                    info5 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
+                    + "  |  " + student.getAcudiente()+ "  |\n\n";
+                }
+                if (hora == 0) { //ACA NO PUEDO PONER UN ELSE PORQUE ME SALE EL MENSAJE COMO SI NO HUBIERA ESTUDIANTES A ESTA HORA
+                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 5:30 am");
+                    return;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Area.setText(info5);
+    }//GEN-LAST:event_cinco30ActionPerformed
 
     public static void main(String args[]) {
 
@@ -284,13 +279,16 @@ public class Listas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea Area;
+    private javax.swing.JLabel LabeLogo;
+    private javax.swing.JLabel LabelFondo;
     private javax.swing.JButton atras;
     private javax.swing.JButton cinco30;
     private javax.swing.JButton dos30;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton seis30;
     private javax.swing.JButton una30;
+    private javax.swing.JLabel verCantidad;
     // End of variables declaration//GEN-END:variables
 }
