@@ -17,25 +17,25 @@ public class Busqueda extends javax.swing.JFrame {
         this.setVisible(false);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        setSize(724, 638);
-        
+        setSize(724, 603);
+
         ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
-        
+
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
-        
+
         LabelFondo.setIcon(icono);
         this.repaint();
-        
+
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
                 LabeLogo.getHeight(), Image.SCALE_DEFAULT));
         LabeLogo.setIcon(icono_logo);
         this.repaint();
     }
-    
+
     @Override
-    public Image getIconImage(){
+    public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("paquete/icono.png"));
         return retValue;
     }
@@ -60,7 +60,6 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         changeNombre = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        changeCodigo = new javax.swing.JButton();
         changeAcud = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -79,6 +78,7 @@ public class Busqueda extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Busqueda Ruta 2020");
         setIconImage(getIconImage());
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         changeTel.setBackground(new java.awt.Color(255, 255, 255));
@@ -198,17 +198,6 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel8.setText("Barrio:");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, -1, 30));
 
-        changeCodigo.setBackground(new java.awt.Color(255, 255, 255));
-        changeCodigo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        changeCodigo.setText("Cambiar código");
-        changeCodigo.setEnabled(false);
-        changeCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeCodigoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(changeCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 270, 170, -1));
-
         changeAcud.setBackground(new java.awt.Color(255, 255, 255));
         changeAcud.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         changeAcud.setText("Cambiar acudiente");
@@ -228,6 +217,7 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel10.setText("Horario PM:");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 470, -1, 30));
 
+        showCod.setEditable(false);
         showCod.setBackground(new java.awt.Color(204, 255, 255));
         showCod.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         showCod.addActionListener(new java.awt.event.ActionListener() {
@@ -300,7 +290,7 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel1.setText("Ruta 2020");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, -1, -1));
         getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, 60, 60));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 640));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 660));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -353,32 +343,39 @@ public class Busqueda extends javax.swing.JFrame {
                 if (codigoB == est.getCodigo()) {
                     switch (est.getAmanecer()) {
                         case 530:
-                        horario1 = "5:30 am";
-                        existe = true;
-                        break;
+                            horario1 = "5:30 am";
+                            existe = true;
+                            break;
                         case 630:
-                        horario1 = "6:30 am";
-                        existe = true;
-                        break;
+                            horario1 = "6:30 am";
+                            existe = true;
+                            break;
+                        case 0:
+                            horario1 = "Ninguno";
+                            break;
                         default:
-                        break;
+                            break;
                     }
                     switch (est.getTarde()) {
                         case 130:
-                        horario2 = "1:30 pm";
-                        existe = true;
-                        break;
+                            horario2 = "1:30 pm";
+                            existe = true;
+                            break;
                         case 230:
-                        horario2 = "2:30 pm";
-                        existe = true;
-                        break;
+                            horario2 = "2:30 pm";
+                            existe = true;
+                            break;
+                        case 0:
+                            horario2 = "Ninguno";
+                            break;
                         default:
-                        break;
+                            break;
                     }
                     showNombre.setText(est.getNombre());
                     showCod.setText(String.valueOf(est.getCodigo()));
                     showAcu.setText(est.getAcudiente());
-                    showTel.setText(String.valueOf(est.getTelefono()));
+                    showTel.setText(String.valueOf(est.getCelular()));
+                    //showTel.setText(String.valueOf(est.getTelefono()));
                     showBarr.setText(est.getBarrio());
                     showAM.setText(horario1);
                     showPM.setText(horario2);
@@ -404,30 +401,13 @@ public class Busqueda extends javax.swing.JFrame {
         changeNombre.setEnabled(false);
     }//GEN-LAST:event_changeNombreActionPerformed
 
-    private void changeCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeCodigoActionPerformed
-        modificaciones();
-        changeCodigo.setEnabled(false);
-    }//GEN-LAST:event_changeCodigoActionPerformed
-
     private void changeAcudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAcudActionPerformed
         modificaciones();
         changeAcud.setEnabled(false);
     }//GEN-LAST:event_changeAcudActionPerformed
 
     private void showCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCodActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        int code2 = Integer.parseInt(showCod.getText());
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            int code3 = D.getCodigo();
-            if (code2 == code3) {
-                changeCodigo.setEnabled(false);//PARA DESHABILITAR EL BOTON
-            } else {
-                changeCodigo.setEnabled(true);//PARA HABILITAR EL BOTON
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_showCodActionPerformed
 
     private void showAcuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAcuActionPerformed
@@ -448,10 +428,10 @@ public class Busqueda extends javax.swing.JFrame {
 
     private void showTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTelActionPerformed
         int codigoD = Integer.parseInt(buscaCodigo.getText());
-        int tel2 = Integer.parseInt(showTel.getText());
+        long tel2 = Long.parseLong(showTel.getText());
         try {
             Estudiante D = base.queryForId(codigoD);
-            long telBD = D.getTelefono();
+            long telBD = D.getCelular();
             if (tel2 == telBD) {
                 changeTel.setEnabled(false);
             } else {
@@ -484,13 +464,13 @@ public class Busqueda extends javax.swing.JFrame {
         int AM3 = 0;
         switch (AM2) {
             case "5:30 am":
-            AM3 = 530;
-            break;
+                AM3 = 530;
+                break;
             case "6:30 am":
-            AM3 = 630;
-            break;
+                AM3 = 630;
+                break;
             default:
-            break;
+                break;
         }
         try {
             Estudiante D = base.queryForId(codigoD);
@@ -511,13 +491,13 @@ public class Busqueda extends javax.swing.JFrame {
         int PM3 = 0;
         switch (PM2) {
             case "1:30 pm":
-            PM3 = 530;
-            break;
+                PM3 = 530;
+                break;
             case "2:30 pm":
-            PM3 = 630;
-            break;
+                PM3 = 630;
+                break;
             default:
-            break;
+                break;
         }
         try {
             Estudiante D = base.queryForId(codigoD);
@@ -562,6 +542,9 @@ public class Busqueda extends javax.swing.JFrame {
                 case "6:30 am":
                     am2 = 630;
                     break;
+                case "Ninguno":
+                    am2 = 0;
+                    break;
                 default:
                     break;
             }
@@ -571,6 +554,9 @@ public class Busqueda extends javax.swing.JFrame {
                     break;
                 case "2:30 pm":
                     pm2 = 230;
+                    break;
+                case "Ninguno":
+                    pm2 = 0;
                     break;
                 default:
                     break;
@@ -623,7 +609,6 @@ public class Busqueda extends javax.swing.JFrame {
     private javax.swing.JButton changeAM;
     private javax.swing.JButton changeAcud;
     private javax.swing.JButton changeBarr;
-    private javax.swing.JButton changeCodigo;
     private javax.swing.JButton changeNombre;
     private javax.swing.JButton changePM;
     private javax.swing.JButton changeTel;

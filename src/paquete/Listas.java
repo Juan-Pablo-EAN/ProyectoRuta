@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import static paquete.Principal.base; //PARA IMPORTAR LA BASE DE DATOS
 
 /**
@@ -27,27 +28,27 @@ public class Listas extends javax.swing.JFrame {
         this.setVisible(false);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        setSize(724, 670);
-        
+        setSize(724, 686);
+
         ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
-        
+
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
-        
+
         LabelFondo.setIcon(icono);
         this.repaint();
-        
+
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
                 LabeLogo.getHeight(), Image.SCALE_DEFAULT));
         LabeLogo.setIcon(icono_logo);
         this.repaint();
-        
+
         verCantidad.setText("Actualmente viajan " + cuantos + " estudiantes en total");
     }
-    
+
     @Override
-    public Image getIconImage(){
+    public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("paquete/icono.png"));
         return retValue;
     }
@@ -68,17 +69,18 @@ public class Listas extends javax.swing.JFrame {
         una30 = new javax.swing.JButton();
         dos30 = new javax.swing.JButton();
         atras = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Area = new javax.swing.JTextArea();
         cinco30 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         LabeLogo = new javax.swing.JLabel();
         verCantidad = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ListaEstudiantes = new javax.swing.JTable();
         LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lista de Estudiantes");
         setIconImage(getIconImage());
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -123,16 +125,7 @@ public class Listas extends javax.swing.JFrame {
                 atrasActionPerformed(evt);
             }
         });
-        getContentPane().add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 540, 130, 60));
-
-        Area.setEditable(false);
-        Area.setBackground(new java.awt.Color(204, 255, 255));
-        Area.setColumns(20);
-        Area.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        Area.setRows(5);
-        jScrollPane1.setViewportView(Area);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 610, 300));
+        getContentPane().add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 600, 130, 60));
 
         cinco30.setBackground(new java.awt.Color(255, 255, 255));
         cinco30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -150,76 +143,87 @@ public class Listas extends javax.swing.JFrame {
         getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 60, 60));
 
         verCantidad.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(verCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 560, 440, 30));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 670));
+        getContentPane().add(verCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, 440, 30));
+
+        ListaEstudiantes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Nombre", "Barrio", "Acudiente", "Teléfono"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(ListaEstudiantes);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 690, 350));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 690));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void seis30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seis30ActionPerformed
-
-        String info6 = "";
-
+        DefaultTableModel tabla = (DefaultTableModel) ListaEstudiantes.getModel();
+        tabla.setRowCount(0);
         try {
-            for (Estudiante student : base.queryForAll()) {
-                int hora = student.getAmanecer();
-                if (hora == 630) {
-                    info6 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                    + "  |  " + student.getAcudiente() + "  |\n\n";
-                }
-                if (hora == 0) {
-                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 6:30 am");
-                    return;
+            for (Estudiante list : base.queryForAll()) {
+                if (list.getAmanecer() == 630) {
+                    Object[] objeto = {list.getCodigo(), list.getNombre(), list.getBarrio(),
+                        list.getAcudiente(), list.getCelular()};
+                    tabla.addRow(objeto);
                 }
             }
+            if(tabla.getRowCount() == 0){
+                JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 6:30 am");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Area.setText(info6);
     }//GEN-LAST:event_seis30ActionPerformed
 
     private void una30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_una30ActionPerformed
-
-        String info1 = "";
-
+        DefaultTableModel tabla3 = (DefaultTableModel) ListaEstudiantes.getModel();
+        tabla3.setRowCount(0);
         try {
-            for (Estudiante student : base.queryForAll()) {
-                int hora = student.getTarde();
-                if (hora == 130) {
-                    info1 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                    + "  |  " + student.getAcudiente() + "  |\n\n";
-                }
-                if (hora == 0) {
-                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 1:30 pm");
-                    return;
+            for(Estudiante student : base.queryForAll()){
+                if(student.getTarde() == 130){
+                    Object[] datos = {student.getCodigo(), student.getNombre(),
+                    student.getBarrio(), student.getAcudiente(), student.getCelular()};
+                    tabla3.addRow(datos);
                 }
             }
+            if(tabla3.getRowCount() == 0){
+                JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 1:30 pm");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Area.setText(info1);
     }//GEN-LAST:event_una30ActionPerformed
 
     private void dos30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dos30ActionPerformed
-
-        String info2 = "";
-
+        DefaultTableModel modelo = (DefaultTableModel) ListaEstudiantes.getModel();
+        modelo.setRowCount(0);
         try {
-            for (Estudiante student : base.queryForAll()) {
-                int hora = student.getTarde();
-                if (hora == 230) {
-                    info2 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                    + "  |  " + student.getAcudiente() + "  |\n\n";
-                }
-                if (hora == 0) {
-                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 2:30 pm");
-                    return;
+            for(Estudiante e : base.queryForAll()){
+                if(e.getTarde() == 230){
+                    Object[] infoE = {e.getCodigo(), e.getNombre(), e.getBarrio(),
+                    e.getAcudiente(), e.getCelular()};
+                    modelo.addRow(infoE);
                 }
             }
+            if(modelo.getRowCount() == 0){
+                JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 2:30 pm");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Area.setText(info2);
     }//GEN-LAST:event_dos30ActionPerformed
 
     private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
@@ -229,24 +233,22 @@ public class Listas extends javax.swing.JFrame {
     }//GEN-LAST:event_atrasActionPerformed
 
     private void cinco30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cinco30ActionPerformed
-        String info5 = "";
-
+        DefaultTableModel tabla = (DefaultTableModel) ListaEstudiantes.getModel();
+        tabla.setRowCount(0);
         try {
-            for (Estudiante student : base.queryForAll()) { //.queryAll() para mostrar o recorrer toda la info en la base de datos
-                int hora = student.getAmanecer();
-                if (hora == 530) {
-                    info5 += student.getCodigo() + " |  " + student.getNombre() + "  |  " + student.getBarrio()
-                    + "  |  " + student.getAcudiente()+ "  |\n\n";
-                }
-                if (hora == 0) { //ACA NO PUEDO PONER UN ELSE PORQUE ME SALE EL MENSAJE COMO SI NO HUBIERA ESTUDIANTES A ESTA HORA
-                    JOptionPane.showMessageDialog(null, "No hay estudiantes que viajen a las 5:30 am");
-                    return;
+            for (Estudiante infos : base.queryForAll()) {
+                if (infos.getAmanecer() == 530) {
+                    Object[] filas = {infos.getCodigo(), infos.getNombre(), infos.getBarrio(),
+                        infos.getAcudiente(), infos.getCelular()};
+                    tabla.addRow(filas);
                 }
             }
+            if(tabla.getRowCount() == 0){
+                JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 5:30 am");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Area.setText(info5);
     }//GEN-LAST:event_cinco30ActionPerformed
 
     public static void main(String args[]) {
@@ -278,15 +280,15 @@ public class Listas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Area;
     private javax.swing.JLabel LabeLogo;
     private javax.swing.JLabel LabelFondo;
+    private javax.swing.JTable ListaEstudiantes;
     private javax.swing.JButton atras;
     private javax.swing.JButton cinco30;
     private javax.swing.JButton dos30;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton seis30;
     private javax.swing.JButton una30;
     private javax.swing.JLabel verCantidad;

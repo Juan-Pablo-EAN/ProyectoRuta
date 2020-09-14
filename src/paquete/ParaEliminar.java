@@ -21,7 +21,7 @@ public class ParaEliminar extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
-        setSize(483, 365);
+        setSize(483, 311);
         
         ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
         
@@ -60,6 +60,7 @@ public class ParaEliminar extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Eliminar un estudiante");
         setIconImage(getIconImage());
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -102,7 +103,7 @@ public class ParaEliminar extends javax.swing.JFrame {
         jLabel1.setText("Ruta 2020");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
         getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 60, 60));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 370));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 310));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,6 +115,7 @@ public class ParaEliminar extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "¡Ocurrió un error!");
         }
+        deleteCode.setText("");
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed

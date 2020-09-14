@@ -16,7 +16,7 @@ public class Estudiante {
     @DatabaseField
     private String acudiente;
     @DatabaseField
-    private long telefono;
+    private long celular; //IMPORTANTE DEFINIR QUÉ TIPO DE VARIABLE ES DESDE EL PRINCIPIO
     @DatabaseField
     private String barrio;
     @DatabaseField
@@ -25,23 +25,16 @@ public class Estudiante {
     private int tarde;
     
     public Estudiante(){
-        
     }
     
-    public Estudiante(String nombre, int codigo, String acudiente, long telefono, String barrio, int amanecer, int tarde){
+    public Estudiante(String nombre, int codigo, String acudiente, long celular, String barrio, int amanecer, int tarde){
         this.nombre = nombre;
         this.codigo = codigo;
         this.acudiente = acudiente;
-        this.telefono = telefono;
+        this.celular = celular;
         this.barrio = barrio;
         this.amanecer = amanecer;
         this.tarde = tarde;
-    }
-    
-    @Override
-    public String toString(){
-        return "Estudiante{" + "nombre=" + nombre + ", codigo=" + codigo + ", acudiente=" + acudiente 
-                + ", telefono=" + telefono + ", barrio" + barrio + ", amanecer" + amanecer + ", tarde" + tarde + '}';
     }
 
     public String getNombre() {
@@ -68,12 +61,12 @@ public class Estudiante {
         this.acudiente = acudiente;
     }
 
-    public long getTelefono() {
-        return telefono;
+    public long getCelular() {
+        return celular;
     }
 
-    public void setTelefono(long telefono) {
-        this.telefono = telefono;
+    public void setCelular(long celular) {
+        this.celular = celular;
     }
 
     public String getBarrio() {
@@ -99,4 +92,7 @@ public class Estudiante {
     public void setTarde(int tarde) {
         this.tarde = tarde;
     }
+
+   
+
 }

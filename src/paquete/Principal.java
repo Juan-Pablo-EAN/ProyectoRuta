@@ -19,11 +19,16 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
+    //para usar la base de datos
+    static Dao<Estudiante, Integer> base;
+    //Estudiante son los datos que se guardan en la tabla segun el identificador
+    //Integer es el tipo de variable del identificador 
+    
     static int total;
     private String name;
     private int code;
     private String parent;
-    private long phone;
+    private long telphone;
     private String home;
     private int am;
     private int pm;
@@ -32,7 +37,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        setSize(745, 543); //Es importante definir esto aca para que se acomode bien la IMAGEN DE FONDO
+        setSize(745, 518); //Es importante definir esto aca para que se acomode bien la IMAGEN DE FONDO
 
         ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
 
@@ -55,21 +60,14 @@ public class Principal extends javax.swing.JFrame {
         return retValue;
     }
 
-    //para usar la base de datos
-    static Dao<Estudiante, Integer> base;
-    //Estudiante son los datos que se guardan en la tabla segun el identificador
-    //Integer es el tipo de variable del identificador 
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        atardecer = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         registro = new javax.swing.JButton();
         buscar = new javax.swing.JButton();
-        telefono = new javax.swing.JTextField();
         eliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -80,7 +78,6 @@ public class Principal extends javax.swing.JFrame {
         estudiante = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        amanecer = new javax.swing.JTextField();
         footer = new javax.swing.JLabel();
         codigo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -89,22 +86,23 @@ public class Principal extends javax.swing.JFrame {
         acudiente = new javax.swing.JTextField();
         LabeLogo = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        manana = new javax.swing.JComboBox<>();
+        after = new javax.swing.JComboBox<>();
+        phoneText = new javax.swing.JTextField();
         LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ruta 2020");
         setIconImage(getIconImage());
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        atardecer.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(atardecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 360, 100, 30));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Telefono del acudiente:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, -1, 20));
 
         jLabel10.setText("pm");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, -1, 30));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 370, -1, 30));
 
         registro.setBackground(new java.awt.Color(255, 255, 255));
         registro.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -127,14 +125,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, 150, 50));
-
-        telefono.setBackground(new java.awt.Color(204, 255, 255));
-        telefono.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                telefonoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, 131, 30));
 
         eliminar.setBackground(new java.awt.Color(255, 255, 255));
         eliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -195,9 +185,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel3.setText("Código:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, 20));
 
-        amanecer.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(amanecer, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 100, 30));
-
         footer.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         footer.setText("Creado por Juan Pablo Ballesteros Obando ®");
         getContentPane().add(footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, 220, 22));
@@ -206,7 +193,7 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 85, 30));
 
         jLabel9.setText("am");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 320, -1, 30));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, -1, 30));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Acudiente:");
@@ -230,63 +217,87 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, 150, 50));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 550));
+
+        manana.setBackground(new java.awt.Color(204, 255, 255));
+        manana.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5:30", "6:30", "Ninguno" }));
+        manana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mananaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(manana, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 330, 100, 30));
+
+        after.setBackground(new java.awt.Color(204, 255, 255));
+        after.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1:30", "2:30", "Ninguno" }));
+        getContentPane().add(after, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, 100, 30));
+
+        phoneText.setBackground(new java.awt.Color(204, 255, 255));
+        phoneText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneTextActionPerformed(evt);
+            }
+        });
+        getContentPane().add(phoneText, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 140, 30));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
+        if (estudiante.getText() == "") {
+            JOptionPane.showMessageDialog(null, "¡Debes llenar todos los espacios!");
+        }
         try {
-            if (estudiante.equals("") || codigo == null || acudiente.equals("")
-                    || telefono == null || barrio.equals("") || amanecer == null //REVISAR ESTE IF
-                    || atardecer == null) {
-                JOptionPane.showMessageDialog(null, "¡Debes llenar todos los espacios!");
-            } else {
-                name = estudiante.getText();
-                code = Integer.parseInt(codigo.getText());
-                parent = acudiente.getText();
-                phone = Long.parseLong(telefono.getText());//Long.parseLong PARA CONVERTIR UN STRING A LONG
-                home = barrio.getText();
-                String amanece = amanecer.getText();
-                switch (amanece) {
-                    case "5:30":
-                        am = 530;
-                        break;
-                    case "6:30":
-                        am = 630;
-                        break;
-                    default:
-                        break;
-                }
-                String atardece = atardecer.getText();
-                switch (atardece) {
-                    case "1:30":
-                        pm = 130;
-                    case "2:30":
-                        pm = 230;
-                        break;
-                    default:
-                        break;
-                }
-
-                for (Estudiante codes : base.queryForAll()) {
-                    if (code == codes.getCodigo()) {
-                        JOptionPane.showMessageDialog(null, "¡Este estudiante ya está registrado!");
-                    }
-                }
-
-                Estudiante e = new Estudiante(name, code, parent, phone, home, am, pm);
-                //base.countOf() para contar cuantos hay en la base de datos
-                base.create(e);//ESTO ES PARA AGRAGAR EL NUEVO ESTUDIANTE A LA BASE DE DATOS
-                JOptionPane.showMessageDialog(null, "¡Nuevo estudiante registrado en la ruta!");
-                estudiante.setText("");
-                codigo.setText("");
-                acudiente.setText("");
-                telefono.setText("");
-                barrio.setText("");
-                amanecer.setText("");
-                atardecer.setText("");
+            name = estudiante.getText();
+            code = Integer.parseInt(codigo.getText());
+            parent = acudiente.getText();
+            telphone = Long.parseLong(phoneText.getText());
+            home = barrio.getText();
+            String amanece = manana.getSelectedItem().toString();
+            switch (amanece) {
+                case "5:30":
+                    am = 530;
+                    break;
+                case "6:30":
+                    am = 630;
+                    break;
+                case "Ninguno":
+                    am = 0;
+                    break;
+                default:
+                    break;
             }
+            String atardece = after.getSelectedItem().toString();
+            switch (atardece) {
+                case "1:30":
+                    pm = 130;
+                    break;
+                case "2:30":
+                    pm = 230;
+                    break;
+                case "Ninguno":
+                    pm = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            for (Estudiante codes : base.queryForAll()) {
+                if (code == codes.getCodigo()) {
+                    JOptionPane.showMessageDialog(null, "¡Este estudiante ya está registrado!");
+                }
+            }
+
+            Estudiante e = new Estudiante(name, code, parent, telphone, home, am, pm);
+            //base.countOf() para contar cuantos hay en la base de datos
+            base.create(e);//ESTO ES PARA AGRAGAR EL NUEVO ESTUDIANTE A LA BASE DE DATOS
+            JOptionPane.showMessageDialog(null, "¡Nuevo estudiante registrado en la ruta!");
+            estudiante.setText("");
+            codigo.setText("");
+            acudiente.setText("");
+            phoneText.setText("");
+            //long1.setText("");
+            barrio.setText("");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ocurrió un error");
         } //EL TRY CATCH LO EXIGE EL base.create(e); POR SI SE GENERAN ERRORES
@@ -297,10 +308,6 @@ public class Principal extends javax.swing.JFrame {
         buscar.setVisible(true);
         hide();
     }//GEN-LAST:event_buscarActionPerformed
-
-    private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_telefonoActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         ParaEliminar delete = new ParaEliminar();
@@ -321,7 +328,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_listasActionPerformed
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
-        System.exit(0);
+        hide();
+        Cerrar close = new Cerrar();
+        close.setVisible(true);
     }//GEN-LAST:event_cerrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -329,6 +338,14 @@ public class Principal extends javax.swing.JFrame {
         Acerca ver = new Acerca();
         ver.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void mananaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mananaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mananaActionPerformed
+
+    private void phoneTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneTextActionPerformed
 
     public static void main(String args[]) throws SQLException {
 
@@ -350,7 +367,7 @@ public class Principal extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        String nombreArchivo = "jdbc:h2:./lista";
+        String nombreArchivo = "jdbc:h2:./nuevaLista";
         ConnectionSource conn = new JdbcConnectionSource(nombreArchivo);
         //estas dos lineas son las mismas de ArchivoEstidiante.class
         base = DaoManager.createDao(conn, Estudiante.class);
@@ -368,8 +385,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel LabeLogo;
     private javax.swing.JLabel LabelFondo;
     private javax.swing.JTextField acudiente;
-    private javax.swing.JTextField amanecer;
-    private javax.swing.JTextField atardecer;
+    private javax.swing.JComboBox<String> after;
     private javax.swing.JTextField barrio;
     private javax.swing.JButton buscar;
     private javax.swing.JButton cerrar;
@@ -389,7 +405,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton listas;
+    private javax.swing.JComboBox<String> manana;
+    private javax.swing.JTextField phoneText;
     private javax.swing.JButton registro;
-    private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 }
