@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -23,7 +25,7 @@ public class Principal extends javax.swing.JFrame {
     static Dao<Estudiante, Integer> base;
     //Estudiante son los datos que se guardan en la tabla segun el identificador
     //Integer es el tipo de variable del identificador 
-    
+
     static int total;
     private String name;
     private int code;
@@ -37,9 +39,9 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        setSize(745, 518); //Es importante definir esto aca para que se acomode bien la IMAGEN DE FONDO
+        setSize(745, 637); //Es importante definir esto aca para que se acomode bien la IMAGEN DE FONDO
 
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");// para el fondo
 
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
@@ -47,17 +49,44 @@ public class Principal extends javax.swing.JFrame {
         LabelFondo.setIcon(icono);
         this.repaint();
 
-        ImageIcon logo = new ImageIcon("src/paquete/icono.png");
-        Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
-                LabeLogo.getHeight(), Image.SCALE_DEFAULT));
-        LabeLogo.setIcon(icono_logo);
-        this.repaint();
+        luzL.setVisible(false);
+        luzR.setVisible(false);
+
+        luces();
     }
 
     @Override
-    public Image getIconImage() {
+    public Image getIconImage() { // para el icono en el JFrame
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("paquete/icono.png"));
         return retValue;
+    }
+
+    public void luces() {
+        Timer tiempo = new Timer(); //objeto Timer para contar el tiempo
+        TimerTask task = new TimerTask() { //Metodo/objeto TimerTask para realizar la accion
+            int tik = 0; //IMPORTANTE DECLARAR LA VARIABLE FUERA DE RUN
+
+            @Override //agregar Override
+            public void run() { //metodo run() necesario para escribir la accion
+
+                if (tik <= 4) {
+                    if (tik % 2 == 0) {
+                        luzL.setVisible(true);
+                        luzR.setVisible(true);
+                    } else {
+                        luzL.setVisible(false);
+                        luzR.setVisible(false);
+                    }
+                } else {
+                    luzL.setVisible(false);
+                    luzR.setVisible(false);
+                }
+                tik++;
+            }
+        };
+        tiempo.schedule(task, 400, 170);
+        //tiempo.schedule(task, 500, 700);//metodo schedule para ejecutar la accion(TimerTask, inicio, cada cuanto se repite);
+        //1000 = 1 segundo
     }
 
     @SuppressWarnings("unchecked")
@@ -84,11 +113,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         acudiente = new javax.swing.JTextField();
-        LabeLogo = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         manana = new javax.swing.JComboBox<>();
         after = new javax.swing.JComboBox<>();
         phoneText = new javax.swing.JTextField();
+        luzR = new javax.swing.JLabel();
+        luzL = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,10 +130,10 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Telefono del acudiente:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, -1, 20));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, -1, 30));
 
         jLabel10.setText("pm");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 370, -1, 30));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 320, -1, 30));
 
         registro.setBackground(new java.awt.Color(255, 255, 255));
         registro.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -113,7 +144,7 @@ public class Principal extends javax.swing.JFrame {
                 registroActionPerformed(evt);
             }
         });
-        getContentPane().add(registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 420, 160, 50));
+        getContentPane().add(registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 470, 130, 40));
 
         buscar.setBackground(new java.awt.Color(255, 255, 255));
         buscar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -124,7 +155,7 @@ public class Principal extends javax.swing.JFrame {
                 buscarActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, 150, 50));
+        getContentPane().add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 150, 50));
 
         eliminar.setBackground(new java.awt.Color(255, 255, 255));
         eliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -135,15 +166,15 @@ public class Principal extends javax.swing.JFrame {
                 eliminarActionPerformed(evt);
             }
         });
-        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 240, 150, 50));
+        getContentPane().add(eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 270, 150, 50));
 
         jLabel1.setFont(new java.awt.Font("Bradley Hand ITC", 1, 48)); // NOI18N
         jLabel1.setText("Ruta 2020");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setText("Barrio o dirección:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, -1, 20));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, -1, 30));
 
         listas.setBackground(new java.awt.Color(255, 255, 255));
         listas.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -154,14 +185,14 @@ public class Principal extends javax.swing.JFrame {
                 listasActionPerformed(evt);
             }
         });
-        getContentPane().add(listas, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 180, 150, 50));
+        getContentPane().add(listas, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 190, 150, 50));
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("Estudiante:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, -1, 20));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, -1, 30));
 
         barrio.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(barrio, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, 170, 30));
+        getContentPane().add(barrio, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, 170, 30));
 
         cerrar.setBackground(new java.awt.Color(255, 255, 255));
         cerrar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -172,40 +203,39 @@ public class Principal extends javax.swing.JFrame {
                 cerrarActionPerformed(evt);
             }
         });
-        getContentPane().add(cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 360, 150, 50));
+        getContentPane().add(cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 150, 50));
 
         estudiante.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(estudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 220, 30));
+        getContentPane().add(estudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 170, 30));
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setText("Horario mañana:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, -1, 20));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, -1, 30));
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Código:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, 20));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, -1, 30));
 
         footer.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         footer.setText("Creado por Juan Pablo Ballesteros Obando ®");
-        getContentPane().add(footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, 220, 22));
+        getContentPane().add(footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 610, 220, 22));
 
         codigo.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 85, 30));
+        getContentPane().add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, 170, 30));
 
         jLabel9.setText("am");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, -1, 30));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, 30));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Acudiente:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, -1, 20));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, -1, 30));
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel8.setText("Horario tarde:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, -1, 20));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, -1, 30));
 
         acudiente.setBackground(new java.awt.Color(204, 255, 255));
-        getContentPane().add(acudiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 220, 30));
-        getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, 60, 60));
+        getContentPane().add(acudiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 170, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -216,7 +246,7 @@ public class Principal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, 150, 50));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 150, 50));
 
         manana.setBackground(new java.awt.Color(204, 255, 255));
         manana.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5:30", "6:30", "Ninguno" }));
@@ -225,11 +255,11 @@ public class Principal extends javax.swing.JFrame {
                 mananaActionPerformed(evt);
             }
         });
-        getContentPane().add(manana, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 330, 100, 30));
+        getContentPane().add(manana, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 140, 30));
 
         after.setBackground(new java.awt.Color(204, 255, 255));
         after.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1:30", "2:30", "Ninguno" }));
-        getContentPane().add(after, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, 100, 30));
+        getContentPane().add(after, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 140, 30));
 
         phoneText.setBackground(new java.awt.Color(204, 255, 255));
         phoneText.addActionListener(new java.awt.event.ActionListener() {
@@ -237,13 +267,23 @@ public class Principal extends javax.swing.JFrame {
                 phoneTextActionPerformed(evt);
             }
         });
-        getContentPane().add(phoneText, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 140, 30));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 520));
+        getContentPane().add(phoneText, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 230, 170, 30));
+
+        luzR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/luz1.png"))); // NOI18N
+        getContentPane().add(luzR, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 390, -1, 70));
+
+        luzL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/luz1.png"))); // NOI18N
+        getContentPane().add(luzL, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 390, 80, 70));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/icono.png"))); // NOI18N
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, -10, 520, 620));
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
+
         if (estudiante.getText() == "") {
             JOptionPane.showMessageDialog(null, "¡Debes llenar todos los espacios!");
         }
@@ -291,6 +331,7 @@ public class Principal extends javax.swing.JFrame {
             Estudiante e = new Estudiante(name, code, parent, telphone, home, am, pm);
             //base.countOf() para contar cuantos hay en la base de datos
             base.create(e);//ESTO ES PARA AGRAGAR EL NUEVO ESTUDIANTE A LA BASE DE DATOS
+            luces();
             JOptionPane.showMessageDialog(null, "¡Nuevo estudiante registrado en la ruta!");
             estudiante.setText("");
             codigo.setText("");
@@ -382,7 +423,6 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LabeLogo;
     private javax.swing.JLabel LabelFondo;
     private javax.swing.JTextField acudiente;
     private javax.swing.JComboBox<String> after;
@@ -396,6 +436,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -405,6 +446,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton listas;
+    private javax.swing.JLabel luzL;
+    private javax.swing.JLabel luzR;
     private javax.swing.JComboBox<String> manana;
     private javax.swing.JTextField phoneText;
     private javax.swing.JButton registro;

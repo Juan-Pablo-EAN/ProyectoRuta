@@ -12,12 +12,16 @@ import static paquete.Principal.base; //PARA IMPORTAR LA BASE DE DATOS
 
 public class Busqueda extends javax.swing.JFrame {
 
+    static String horarioA;
+    static String horarioP;
+
     public Busqueda() {
         initComponents();
         this.setVisible(false);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         setSize(724, 603);
+        volverLista.setVisible(false);
 
         ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
 
@@ -32,12 +36,61 @@ public class Busqueda extends javax.swing.JFrame {
                 LabeLogo.getHeight(), Image.SCALE_DEFAULT));
         LabeLogo.setIcon(icono_logo);
         this.repaint();
+
+        if (Listas.buscado == true) {
+            try {
+                for (Estudiante e : base.queryForAll()) {
+                    if (e.getCodigo() == Listas.IDtabla) {
+                        showNombre.setText(e.getNombre());
+                        showCod.setText(String.valueOf(e.getCodigo()));
+                        showAcu.setText(e.getAcudiente());
+                        showTel.setText(String.valueOf(e.getCelular()));
+                        showBarr.setText(e.getBarrio());
+                        horarios(e.getAmanecer(), e.getTarde());
+                        showAM.setText(String.valueOf(horarioA));
+                        showPM.setText(String.valueOf(horarioP));
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            volverLista.setVisible(true);
+        }
     }
 
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("paquete/icono.png"));
         return retValue;
+    }
+
+    private void horarios(int amanecer, int atardecer) {
+        switch (amanecer) {
+            case 530:
+                horarioA = "5:30 am";
+                break;
+            case 630:
+                horarioA = "6:30 am";
+                break;
+            case 0:
+                horarioA = "Ninguno";
+                break;
+            default:
+                break;
+        }
+        switch (atardecer) {
+            case 130:
+                horarioP = "1:30 pm";
+                break;
+            case 230:
+                horarioP = "2:30 pm";
+                break;
+            case 0:
+                horarioP = "Ninguno";
+                break;
+            default:
+                break;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -73,6 +126,7 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         LabeLogo = new javax.swing.JLabel();
+        volverLista = new javax.swing.JButton();
         LabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -144,7 +198,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Nombre:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, -1, 30));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, -1, 30));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setText("Código:");
@@ -152,7 +206,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Acudiente:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 310, -1, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, -1, 30));
 
         Buscar.setBackground(new java.awt.Color(255, 255, 255));
         Buscar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -166,7 +220,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setText("Código:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, -1, 30));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, 30));
 
         Atras.setBackground(new java.awt.Color(255, 255, 255));
         Atras.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -180,7 +234,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel7.setText("Teléfono:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, -1, 30));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 350, -1, 30));
 
         changeNombre.setBackground(new java.awt.Color(255, 255, 255));
         changeNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -196,7 +250,7 @@ public class Busqueda extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel8.setText("Barrio:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, -1, 30));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, -1, 30));
 
         changeAcud.setBackground(new java.awt.Color(255, 255, 255));
         changeAcud.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -290,6 +344,16 @@ public class Busqueda extends javax.swing.JFrame {
         jLabel1.setText("Ruta 2020");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, -1, -1));
         getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, 60, 60));
+
+        volverLista.setBackground(new java.awt.Color(255, 255, 255));
+        volverLista.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        volverLista.setText("Volver a listas");
+        volverLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverListaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(volverLista, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 520, 140, 50));
         getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 660));
 
         pack();
@@ -335,50 +399,19 @@ public class Busqueda extends javax.swing.JFrame {
 
         int codigoB = Integer.parseInt(buscaCodigo.getText());
 
-        String horario1 = "";
-        String horario2 = "";
         boolean existe = false;
         try {
             for (Estudiante est : base.queryForAll()) {
+                horarios(est.getAmanecer(), est.getTarde()); //metodo para mostrar bien los horarios en pantalla
                 if (codigoB == est.getCodigo()) {
-                    switch (est.getAmanecer()) {
-                        case 530:
-                            horario1 = "5:30 am";
-                            existe = true;
-                            break;
-                        case 630:
-                            horario1 = "6:30 am";
-                            existe = true;
-                            break;
-                        case 0:
-                            horario1 = "Ninguno";
-                            break;
-                        default:
-                            break;
-                    }
-                    switch (est.getTarde()) {
-                        case 130:
-                            horario2 = "1:30 pm";
-                            existe = true;
-                            break;
-                        case 230:
-                            horario2 = "2:30 pm";
-                            existe = true;
-                            break;
-                        case 0:
-                            horario2 = "Ninguno";
-                            break;
-                        default:
-                            break;
-                    }
+                    existe = true;
                     showNombre.setText(est.getNombre());
                     showCod.setText(String.valueOf(est.getCodigo()));
                     showAcu.setText(est.getAcudiente());
                     showTel.setText(String.valueOf(est.getCelular()));
-                    //showTel.setText(String.valueOf(est.getTelefono()));
                     showBarr.setText(est.getBarrio());
-                    showAM.setText(horario1);
-                    showPM.setText(horario2);
+                    showAM.setText(horarioA);
+                    showPM.setText(horarioP);
                 }
             }
             if (existe == false) {
@@ -523,6 +556,22 @@ public class Busqueda extends javax.swing.JFrame {
         buscaCodigo.setText("");
     }//GEN-LAST:event_limpiarActionPerformed
 
+    private void volverListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverListaActionPerformed
+        showNombre.setText("");
+        showCod.setText("");
+        showAcu.setText("");
+        showTel.setText("");
+        showBarr.setText("");
+        showAM.setText("");
+        showPM.setText("");
+        buscaCodigo.setText("");
+        Listas.IDtabla = 0;
+        Listas.buscado = false;
+        hide();
+        Listas li = new Listas();
+        li.setVisible(true);
+    }//GEN-LAST:event_volverListaActionPerformed
+
     private void modificaciones() {
         boolean pasa = false;
         try {
@@ -631,5 +680,6 @@ public class Busqueda extends javax.swing.JFrame {
     private javax.swing.JTextField showNombre;
     private javax.swing.JTextField showPM;
     private javax.swing.JTextField showTel;
+    private javax.swing.JButton volverLista;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,6 +2,8 @@ package paquete;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,8 @@ public class Listas extends javax.swing.JFrame {
     private String info6;
     private String info1;
     private String info2;
+    static int IDtabla;
+    static boolean buscado = false;
 
     public Listas() {
         initComponents();
@@ -45,6 +49,7 @@ public class Listas extends javax.swing.JFrame {
         this.repaint();
 
         verCantidad.setText("Actualmente viajan " + cuantos + " estudiantes en total");
+
     }
 
     @Override
@@ -161,6 +166,11 @@ public class Listas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        ListaEstudiantes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ListaEstudiantesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(ListaEstudiantes);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 690, 350));
@@ -180,26 +190,27 @@ public class Listas extends javax.swing.JFrame {
                     tabla.addRow(objeto);
                 }
             }
-            if(tabla.getRowCount() == 0){
+            if (tabla.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 6:30 am");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_seis30ActionPerformed
 
     private void una30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_una30ActionPerformed
-        DefaultTableModel tabla3 = (DefaultTableModel) ListaEstudiantes.getModel();
-        tabla3.setRowCount(0);
+        DefaultTableModel tabla3 = (DefaultTableModel) ListaEstudiantes.getModel();//para definir el contenido de una tabla en la tabla ListaEstudiantes
+        tabla3.setRowCount(0);//esto nos ayuda a poner la tabla en ceros antes de llenarla cada vez que se le de click
         try {
-            for(Estudiante student : base.queryForAll()){
-                if(student.getTarde() == 130){
-                    Object[] datos = {student.getCodigo(), student.getNombre(),
-                    student.getBarrio(), student.getAcudiente(), student.getCelular()};
-                    tabla3.addRow(datos);
+            for (Estudiante student : base.queryForAll()) {//para recorrer la base de datos
+                if (student.getTarde() == 130) {//para descartar y encontrar lo que busco en la base
+                    Object[] datos = {student.getCodigo(), student.getNombre(),//java me exige crear un objeto[]{} para añadirlo al JTable
+                        student.getBarrio(), student.getAcudiente(), student.getCelular()};
+                    tabla3.addRow(datos);//para agregar los datos del objeto[]{} a la tabla
                 }
             }
-            if(tabla3.getRowCount() == 0){
+            if (tabla3.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 1:30 pm");
             }
         } catch (SQLException ex) {
@@ -211,14 +222,14 @@ public class Listas extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) ListaEstudiantes.getModel();
         modelo.setRowCount(0);
         try {
-            for(Estudiante e : base.queryForAll()){
-                if(e.getTarde() == 230){
+            for (Estudiante e : base.queryForAll()) {
+                if (e.getTarde() == 230) {
                     Object[] infoE = {e.getCodigo(), e.getNombre(), e.getBarrio(),
-                    e.getAcudiente(), e.getCelular()};
+                        e.getAcudiente(), e.getCelular()};
                     modelo.addRow(infoE);
                 }
             }
-            if(modelo.getRowCount() == 0){
+            if (modelo.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 2:30 pm");
             }
         } catch (SQLException ex) {
@@ -243,13 +254,29 @@ public class Listas extends javax.swing.JFrame {
                     tabla.addRow(filas);
                 }
             }
-            if(tabla.getRowCount() == 0){
+            if (tabla.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay estudiantes registrados a las 5:30 am");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Listas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cinco30ActionPerformed
+
+    private void ListaEstudiantesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaEstudiantesMouseClicked
+        //metodo MouseClicked para seleccionar las filas de la tabla
+        int fila = ListaEstudiantes.rowAtPoint(evt.getPoint());//para saber que fila se esta seleccionando
+        IDtabla = (int) ListaEstudiantes.getValueAt(fila, 0);//para conocer el valor que hay en la fila seleccionada y en la COLUMNA CERO
+        int comparar = (int) ListaEstudiantes.getValueAt(fila, 0); 
+        buscado = true;
+        if (IDtabla == comparar) {//para que pueda seleccionar una fila con un solo click
+            hide();                      //
+            Busqueda b = new Busqueda(); //lo que quiero que pase cuando se selecciona una fila
+            b.setVisible(true);          //
+        } else {
+            return; //por si acaso
+        }
+
+    }//GEN-LAST:event_ListaEstudiantesMouseClicked
 
     public static void main(String args[]) {
 
