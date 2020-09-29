@@ -22,7 +22,7 @@ import java.util.TimerTask;
 public class Principal extends javax.swing.JFrame {
 
     //para usar la base de datos
-    static Dao<Estudiante, Integer> base;
+    static Dao<Estudiante, Integer> base; //aqui se declara la base para ser usada como si fuera una variable
     //Estudiante son los datos que se guardan en la tabla segun el identificador
     //Integer es el tipo de variable del identificador 
 
@@ -84,8 +84,7 @@ public class Principal extends javax.swing.JFrame {
                 tik++;
             }
         };
-        tiempo.schedule(task, 400, 170);
-        //tiempo.schedule(task, 500, 700);//metodo schedule para ejecutar la accion(TimerTask, inicio, cada cuanto se repite);
+        tiempo.schedule(task, 400, 170);//metodo schedule para ejecutar la accion(TimerTask, inicio, cada cuanto se repite);
         //1000 = 1 segundo
     }
 
@@ -142,6 +141,11 @@ public class Principal extends javax.swing.JFrame {
         registro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registroActionPerformed(evt);
+            }
+        });
+        registro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                registroKeyPressed(evt);
             }
         });
         getContentPane().add(registro, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 470, 130, 40));
@@ -387,6 +391,10 @@ public class Principal extends javax.swing.JFrame {
     private void phoneTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneTextActionPerformed
+
+    private void registroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registroKeyPressed
+       
+    }//GEN-LAST:event_registroKeyPressed
 
     public static void main(String args[]) throws SQLException {
 
