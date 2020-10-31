@@ -15,15 +15,15 @@ public class Acerca extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
-        setSize(400, 312);
+        setSize(442, 312);
         
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        /*ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
         
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
         
         LabelFondo.setIcon(icono);
-        this.repaint();
+        this.repaint();*/
         
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
@@ -86,7 +86,9 @@ public class Acerca extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 110, 50));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 320));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 320));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

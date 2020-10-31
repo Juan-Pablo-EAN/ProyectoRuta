@@ -2,6 +2,7 @@ package paquete;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import java.util.Date;
 
 /**
  *
@@ -9,9 +10,10 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable
 public class Estudiante {
+
     @DatabaseField
     private String nombre;
-    @DatabaseField (id = true)
+    @DatabaseField(id = true)
     private int codigo;
     @DatabaseField
     private String acudiente;
@@ -23,11 +25,16 @@ public class Estudiante {
     private int amanecer;
     @DatabaseField
     private int tarde;
-    
-    public Estudiante(){
+    @DatabaseField
+    private Date fecha;
+    @DatabaseField
+    private String lugar;
+
+    public Estudiante() {
     }
-    
-    public Estudiante(String nombre, int codigo, String acudiente, long celular, String barrio, int amanecer, int tarde){
+
+    public Estudiante(String nombre, int codigo, String acudiente,
+            long celular, String barrio, int amanecer, int tarde, Date fecha, String lugar) {
         this.nombre = nombre;
         this.codigo = codigo;
         this.acudiente = acudiente;
@@ -35,6 +42,8 @@ public class Estudiante {
         this.barrio = barrio;
         this.amanecer = amanecer;
         this.tarde = tarde;
+        this.fecha = fecha;
+        this.lugar = lugar;
     }
 
     public String getNombre() {
@@ -93,6 +102,20 @@ public class Estudiante {
         this.tarde = tarde;
     }
 
-   
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
 
 }

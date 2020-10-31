@@ -2,7 +2,10 @@ package paquete;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -14,6 +17,7 @@ public class Busqueda extends javax.swing.JFrame {
 
     static String horarioA;
     static String horarioP;
+    private boolean hab = false;
 
     public Busqueda() {
         initComponents();
@@ -23,24 +27,19 @@ public class Busqueda extends javax.swing.JFrame {
         setSize(724, 603);
         volverLista.setVisible(false);
 
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
-
-        Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
-                LabelFondo.getHeight(), Image.SCALE_DEFAULT));
-
-        LabelFondo.setIcon(icono);
-        this.repaint();
-
-        ImageIcon logo = new ImageIcon("src/paquete/icono.png");
-        Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
-                LabeLogo.getHeight(), Image.SCALE_DEFAULT));
-        LabeLogo.setIcon(icono_logo);
-        this.repaint();
+        showNombre.setEditable(false);
+        showCod.setEditable(false);
+        showAcu.setEditable(false);
+        showTel.setEditable(false);
+        showBarr.setEditable(false);
+        showAM.setEditable(false);
+        showPM.setEditable(false);
 
         if (Listas.buscado == true) {
             try {
                 for (Estudiante e : base.queryForAll()) {
                     if (e.getCodigo() == Listas.IDtabla) {
+                        buscaCodigo.setText(String.valueOf(e.getCodigo()));
                         showNombre.setText(e.getNombre());
                         showCod.setText(String.valueOf(e.getCodigo()));
                         showAcu.setText(e.getAcudiente());
@@ -49,6 +48,12 @@ public class Busqueda extends javax.swing.JFrame {
                         horarios(e.getAmanecer(), e.getTarde());
                         showAM.setText(String.valueOf(horarioA));
                         showPM.setText(String.valueOf(horarioP));
+                        showNombre.setEditable(true);
+                        showAcu.setEditable(true);
+                        showTel.setEditable(true);
+                        showBarr.setEditable(true);
+                        showAM.setEditable(true);
+                        showPM.setEditable(true);
                     }
                 }
             } catch (SQLException ex) {
@@ -56,6 +61,13 @@ public class Busqueda extends javax.swing.JFrame {
             }
             volverLista.setVisible(true);
         }
+
+        shemaNom();
+        shemaAcu();
+        shemaTel();
+        shemaBarr();
+        shemaAM();
+        shemaPM();
     }
 
     @Override
@@ -170,6 +182,11 @@ public class Busqueda extends javax.swing.JFrame {
 
         buscaCodigo.setBackground(new java.awt.Color(204, 255, 255));
         buscaCodigo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buscaCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaCodigoActionPerformed(evt);
+            }
+        });
         getContentPane().add(buscaCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 80, -1));
 
         changeBarr.setBackground(new java.awt.Color(255, 255, 255));
@@ -354,6 +371,8 @@ public class Busqueda extends javax.swing.JFrame {
             }
         });
         getContentPane().add(volverLista, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 520, 140, 50));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
         getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 660));
 
         pack();
@@ -380,54 +399,325 @@ public class Busqueda extends javax.swing.JFrame {
     }//GEN-LAST:event_changeBarrActionPerformed
 
     private void showNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNombreActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        String name2 = showNombre.getText();
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            String nameBD = D.getNombre();
-            if (nameBD.equals(name2)) {
-                changeNombre.setEnabled(false);//PARA DESHABILITAR EL BOTON DE changeNombre
-            } else {
-                changeNombre.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changeNombre.setEnabled(false);
         }
     }//GEN-LAST:event_showNombreActionPerformed
 
-    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
-
-        int codigoB = Integer.parseInt(buscaCodigo.getText());
-
-        boolean existe = false;
-        try {
-            for (Estudiante est : base.queryForAll()) {
-                horarios(est.getAmanecer(), est.getTarde()); //metodo para mostrar bien los horarios en pantalla
-                if (codigoB == est.getCodigo()) {
-                    existe = true;
-                    showNombre.setText(est.getNombre());
-                    showCod.setText(String.valueOf(est.getCodigo()));
-                    showAcu.setText(est.getAcudiente());
-                    showTel.setText(String.valueOf(est.getCelular()));
-                    showBarr.setText(est.getBarrio());
-                    showAM.setText(horarioA);
-                    showPM.setText(horarioP);
+    public void busqueda() {
+        if (!buscaCodigo.getText().equals("")) {
+            int codigoB = 0;
+            boolean letra = false;
+            try {
+                codigoB = Integer.parseInt(buscaCodigo.getText());
+            } catch (Exception e) {
+                System.out.println(e);
+                JOptionPane.showMessageDialog(null, "No puedes escribir simbolos o letras en este espacio");
+                letra = true;
+            }
+            boolean existe = false;
+            try {
+                for (Estudiante est : base.queryForAll()) {
+                    horarios(est.getAmanecer(), est.getTarde()); //metodo para mostrar bien los horarios en pantalla
+                    if (codigoB == est.getCodigo()) {
+                        existe = true;
+                        showNombre.setText(est.getNombre());
+                        showCod.setText(String.valueOf(est.getCodigo()));
+                        showAcu.setText(est.getAcudiente());
+                        showTel.setText(String.valueOf(est.getCelular()));
+                        showBarr.setText(est.getBarrio());
+                        showAM.setText(horarioA);
+                        showPM.setText(horarioP);
+                        showNombre.setEditable(true);
+                        showAcu.setEditable(true);
+                        showTel.setEditable(true);
+                        showBarr.setEditable(true);
+                        showAM.setEditable(true);
+                        showPM.setEditable(true);
+                    }
                 }
+                if (existe == false && letra == false) {
+                    JOptionPane.showMessageDialog(null, "El estudiante con código " + buscaCodigo.getText() + " no esta registrado");
+                    return;
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error");
             }
-            if (existe == false) {
-                JOptionPane.showMessageDialog(null, "El estudiante con código " + buscaCodigo.getText() + " no esta registrado");
-                return;
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingresa un número para buscar");
         }
+    }
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        busqueda();
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
+        Listas.buscado = false;
         hide();
         Principal prin = new Principal();
         prin.setVisible(true);
     }//GEN-LAST:event_AtrasActionPerformed
+
+    public void shemaNom() {
+        KeyListener accion = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        if (et.getNombre().equals(showNombre.getText())) {
+                            changeNombre.setEnabled(false);
+                            hab = false;
+                        } else if (showNombre.getText().equals("")) {
+                            changeNombre.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeNombre.setEnabled(true);
+                            hab = true;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+
+        showNombre.addKeyListener(accion);
+    }
+
+    public void shemaAcu() {
+
+        KeyListener accion2 = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        if (et.getAcudiente().equals(showAcu.getText())) {
+                            changeAcud.setEnabled(false);
+                            hab = false;
+                        } else if (showAcu.getText().equals("")) {
+                            changeAcud.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeAcud.setEnabled(true);
+                            hab = true;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+
+        showAcu.addKeyListener(accion2);
+    }
+
+    public void shemaTel() {
+        KeyListener accion3 = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            public void keyPressed(KeyEvent e) {
+            }
+
+            public void keyReleased(KeyEvent e) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        if (showTel.getText().equals("")) {
+                            changeTel.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeTel.setEnabled(true);
+                            hab = true;
+                        }
+                        try {
+                            if (et.getCelular() == Long.parseLong(showTel.getText().trim())) {
+                                changeTel.setEnabled(false);
+                                hab = false;
+                            }
+                        } catch (Exception exc) {
+                            JOptionPane.showMessageDialog(null, "No puedes escribir letras en este espacio");
+                        }
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        showTel.addKeyListener(accion3);
+    }
+
+    public void shemaBarr() {
+        KeyListener accion4 = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        if (et.getBarrio().equals(showBarr.getText())) {
+                            changeBarr.setEnabled(false);
+                            hab = false;
+                        } else if (showBarr.getText().equals("")) {
+                            changeBarr.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeBarr.setEnabled(true);
+                            hab = true;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        showBarr.addKeyListener(accion4);
+    }
+
+    public void shemaAM() {
+        KeyListener accion5 = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        String verAm = showAM.getText();
+                        int verAm2 = 0;
+                        switch (verAm) {
+                            case "5:30 am":
+                                verAm2 = 530;
+                                break;
+                            case "6:30 am":
+                                verAm2 = 630;
+                                break;
+                            case "Ninguno":
+                                verAm2 = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        if (et.getAmanecer() == verAm2) {
+                            changeAM.setEnabled(false);
+                            hab = false;
+                        } else if (showAM.getText().equals("")) {
+                            changeAM.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeAM.setEnabled(true);
+                            hab = true;
+                        }
+
+                        //para corregir lo del escuchar a "ninguno"
+                        if (et.getAmanecer() == 0 && showAM.getText().equals("Ninguno")) {
+                            changeAM.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changeAM.setEnabled(true);
+                            hab = true;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        showAM.addKeyListener(accion5);
+    }
+
+    public void shemaPM() {
+        KeyListener accion6 = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!buscaCodigo.getText().equals("")) {
+                    try {
+                        Estudiante et = base.queryForId(Integer.parseInt(buscaCodigo.getText()));
+                        String verPm = showPM.getText();
+                        int verPm2 = 0;
+                        switch (verPm) {
+                            case "1:30 pm":
+                                verPm2 = 130;
+                                break;
+                            case "2:30 pm":
+                                verPm2 = 230;
+                                break;
+                            case "Ninguno":
+                                verPm2 = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        if (et.getTarde() == verPm2) {
+                            changePM.setEnabled(false);
+                            hab = false;
+                        } else if (showPM.getText().equals("")) {
+                            changePM.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changePM.setEnabled(true);
+                            hab = true;
+                        }
+
+                        //para corregir lo del escuchar a "ninguno"
+                        if (et.getTarde() == 0 && showPM.getText().equals("Ninguno")) {
+                            changePM.setEnabled(false);
+                            hab = false;
+                        } else {
+                            changePM.setEnabled(true);
+                            hab = true;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        showPM.addKeyListener(accion6);
+    }
 
     private void changeNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeNombreActionPerformed
         modificaciones();
@@ -444,104 +734,37 @@ public class Busqueda extends javax.swing.JFrame {
     }//GEN-LAST:event_showCodActionPerformed
 
     private void showAcuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAcuActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        String acud2 = showAcu.getText();
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            String acudBD = D.getAcudiente();
-            if (acudBD.equals(acud2)) {
-                changeAcud.setEnabled(false);
-            } else {
-                changeAcud.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changeAcud.setEnabled(false);
         }
     }//GEN-LAST:event_showAcuActionPerformed
 
     private void showTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTelActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        long tel2 = Long.parseLong(showTel.getText());
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            long telBD = D.getCelular();
-            if (tel2 == telBD) {
-                changeTel.setEnabled(false);
-            } else {
-                changeTel.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changeTel.setEnabled(false);
         }
     }//GEN-LAST:event_showTelActionPerformed
 
     private void showBarrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBarrActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        String barrio2 = showBarr.getText();
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            String barrioBD = D.getBarrio();
-            if (barrioBD.equals(barrio2)) {
-                changeBarr.setEnabled(false);
-            } else {
-                changeBarr.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changeBarr.setEnabled(false);
         }
     }//GEN-LAST:event_showBarrActionPerformed
 
     private void showAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAMActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        String AM2 = showAM.getText();
-        int AM3 = 0;
-        switch (AM2) {
-            case "5:30 am":
-                AM3 = 530;
-                break;
-            case "6:30 am":
-                AM3 = 630;
-                break;
-            default:
-                break;
-        }
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            int AMBD = D.getAmanecer();
-            if (AM3 == AMBD) {
-                changeAM.setEnabled(false);
-            } else {
-                changeAM.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changeAM.setEnabled(false);
         }
     }//GEN-LAST:event_showAMActionPerformed
 
     private void showPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPMActionPerformed
-        int codigoD = Integer.parseInt(buscaCodigo.getText());
-        String PM2 = showPM.getText();
-        int PM3 = 0;
-        switch (PM2) {
-            case "1:30 pm":
-                PM3 = 530;
-                break;
-            case "2:30 pm":
-                PM3 = 630;
-                break;
-            default:
-                break;
-        }
-        try {
-            Estudiante D = base.queryForId(codigoD);
-            int PMBD = D.getTarde();
-            if (PM3 == PMBD) {
-                changePM.setEnabled(false);
-            } else {
-                changePM.setEnabled(true);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+        if (hab == true) {
+            modificaciones();
+            changePM.setEnabled(false);
         }
     }//GEN-LAST:event_showPMActionPerformed
 
@@ -554,6 +777,13 @@ public class Busqueda extends javax.swing.JFrame {
         showAM.setText("");
         showPM.setText("");
         buscaCodigo.setText("");
+        showNombre.setEditable(false);
+        showAcu.setEditable(false);
+        showTel.setEditable(false);
+        showBarr.setEditable(false);
+        showAM.setEditable(false);
+        showPM.setEditable(false);
+
     }//GEN-LAST:event_limpiarActionPerformed
 
     private void volverListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverListaActionPerformed
@@ -572,8 +802,13 @@ public class Busqueda extends javax.swing.JFrame {
         li.setVisible(true);
     }//GEN-LAST:event_volverListaActionPerformed
 
+    private void buscaCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaCodigoActionPerformed
+        busqueda();
+    }//GEN-LAST:event_buscaCodigoActionPerformed
+
     private void modificaciones() {
         boolean pasa = false;
+        boolean pasa2 = false;
         try {
             String name1 = showNombre.getText();
             int code1 = Integer.parseInt(showCod.getText());
@@ -584,41 +819,58 @@ public class Busqueda extends javax.swing.JFrame {
             String pm1 = showPM.getText();
             int am2 = 0;
             int pm2 = 0;
+            Date date = null;
+            String sitio = "";
             switch (am1) {
                 case "5:30 am":
                     am2 = 530;
+                    pasa = true;
                     break;
                 case "6:30 am":
                     am2 = 630;
+                    pasa = true;
                     break;
                 case "Ninguno":
                     am2 = 0;
+                    pasa = true;
                     break;
                 default:
+                    JOptionPane.showMessageDialog(null, "Solamente hay horarios de 5:30 y 6:30 am");
+                    pasa = false;
                     break;
             }
             switch (pm1) {
                 case "1:30 pm":
                     pm2 = 130;
+                    pasa2 = true;
                     break;
                 case "2:30 pm":
                     pm2 = 230;
+                    pasa2 = true;
                     break;
                 case "Ninguno":
                     pm2 = 0;
+                    pasa2 = true;
                     break;
                 default:
+                    JOptionPane.showMessageDialog(null, "Solamente hay horarios de 1:30 y 2:30 pm");
+                    pasa2 = false;
                     break;
             }
-            Estudiante e = new Estudiante(name1, code1, acud1, phone1, home1, am2, pm2);
-            base.update(e);
-            pasa = true;
+            if (pasa == true && pasa2 == true) {
+                Estudiante etd = base.queryForId(Integer.parseInt(showCod.getText()));
+                date = etd.getFecha();
+                sitio = etd.getLugar();
+
+                Estudiante e = new Estudiante(name1, code1, acud1, phone1, home1, am2, pm2, date, sitio);
+                base.update(e);
+                JOptionPane.showMessageDialog(null, "¡Datos cambiados exitosamente!");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(Busqueda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "¡Ocurrió un error!\n"
+                    + "Vuelve a intentarlo");
         }
-        if (pasa == true) {
-            JOptionPane.showMessageDialog(null, "¡Datos cambiados exitosamente!");
-        }
+
     }
 
     public static void main(String args[]) {

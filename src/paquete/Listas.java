@@ -32,15 +32,15 @@ public class Listas extends javax.swing.JFrame {
         this.setVisible(false);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        setSize(724, 686);
+        //setSize(724, 686);
 
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        /*ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
 
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
 
         LabelFondo.setIcon(icono);
-        this.repaint();
+        this.repaint();*/
 
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
@@ -100,7 +100,7 @@ public class Listas extends javax.swing.JFrame {
                 seis30ActionPerformed(evt);
             }
         });
-        getContentPane().add(seis30, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 140, 60));
+        getContentPane().add(seis30, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, 140, 60));
 
         una30.setBackground(new java.awt.Color(255, 255, 255));
         una30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -110,7 +110,7 @@ public class Listas extends javax.swing.JFrame {
                 una30ActionPerformed(evt);
             }
         });
-        getContentPane().add(una30, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, 140, 60));
+        getContentPane().add(una30, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 140, 60));
 
         dos30.setBackground(new java.awt.Color(255, 255, 255));
         dos30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -120,7 +120,7 @@ public class Listas extends javax.swing.JFrame {
                 dos30ActionPerformed(evt);
             }
         });
-        getContentPane().add(dos30, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 140, 60));
+        getContentPane().add(dos30, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 160, 140, 60));
 
         atras.setBackground(new java.awt.Color(255, 255, 255));
         atras.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -130,7 +130,7 @@ public class Listas extends javax.swing.JFrame {
                 atrasActionPerformed(evt);
             }
         });
-        getContentPane().add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 600, 130, 60));
+        getContentPane().add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 600, 130, 60));
 
         cinco30.setBackground(new java.awt.Color(255, 255, 255));
         cinco30.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -140,7 +140,7 @@ public class Listas extends javax.swing.JFrame {
                 cinco30ActionPerformed(evt);
             }
         });
-        getContentPane().add(cinco30, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 140, 60));
+        getContentPane().add(cinco30, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 140, 60));
 
         jLabel3.setFont(new java.awt.Font("Bradley Hand ITC", 1, 48)); // NOI18N
         jLabel3.setText("Ruta 2020");
@@ -155,11 +155,11 @@ public class Listas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Nombre", "Barrio", "Acudiente", "Teléfono"
+                "Código", "Nombre", "Barrio", "Acudiente", "Teléfono", "Fecha de registro", "Lugar de registro"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -173,8 +173,10 @@ public class Listas extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(ListaEstudiantes);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 690, 350));
-        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 690));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 790, 350));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
+        getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 690));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -186,7 +188,7 @@ public class Listas extends javax.swing.JFrame {
             for (Estudiante list : base.queryForAll()) {
                 if (list.getAmanecer() == 630) {
                     Object[] objeto = {list.getCodigo(), list.getNombre(), list.getBarrio(),
-                        list.getAcudiente(), list.getCelular()};
+                        list.getAcudiente(), list.getCelular(), list.getFecha(), list.getLugar()};
                     tabla.addRow(objeto);
                 }
             }
@@ -206,7 +208,7 @@ public class Listas extends javax.swing.JFrame {
             for (Estudiante student : base.queryForAll()) {//para recorrer la base de datos
                 if (student.getTarde() == 130) {//para descartar y encontrar lo que busco en la base
                     Object[] datos = {student.getCodigo(), student.getNombre(),//java me exige crear un objeto[]{} para añadirlo al JTable
-                        student.getBarrio(), student.getAcudiente(), student.getCelular()};
+                        student.getBarrio(), student.getAcudiente(), student.getCelular(), student.getFecha(), student.getLugar()};
                     tabla3.addRow(datos);//para agregar los datos del objeto[]{} a la tabla
                 }
             }
@@ -225,7 +227,7 @@ public class Listas extends javax.swing.JFrame {
             for (Estudiante e : base.queryForAll()) {
                 if (e.getTarde() == 230) {
                     Object[] infoE = {e.getCodigo(), e.getNombre(), e.getBarrio(),
-                        e.getAcudiente(), e.getCelular()};
+                        e.getAcudiente(), e.getCelular(), e.getFecha(), e.getLugar()};
                     modelo.addRow(infoE);
                 }
             }
@@ -250,7 +252,7 @@ public class Listas extends javax.swing.JFrame {
             for (Estudiante infos : base.queryForAll()) {
                 if (infos.getAmanecer() == 530) {
                     Object[] filas = {infos.getCodigo(), infos.getNombre(), infos.getBarrio(),
-                        infos.getAcudiente(), infos.getCelular()};
+                        infos.getAcudiente(), infos.getCelular(), infos.getFecha(), infos.getLugar()};
                     tabla.addRow(filas);
                 }
             }

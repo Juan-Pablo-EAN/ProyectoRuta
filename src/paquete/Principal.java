@@ -7,6 +7,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -18,6 +20,15 @@ import java.util.TimerTask;
 /**
  *
  * @author Juan Pablo
+ */
+
+/*
+Para la ejecucion de un archivo .jar se puede desde Netbeans
+Para convertir el .jar en .exe su hace con Launch4j donde se deben agregar
+las carpetas de las imagenes y de las bases de datos junto con
+el archivo Data Base Field, ademas, se le agrega el JRE para que el usuario
+no tenga que instalar Java en su computador
+Para convertir el .exe en instalador se puede con Inno Setulp Compiler donde
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -34,6 +45,8 @@ public class Principal extends javax.swing.JFrame {
     private String home;
     private int am;
     private int pm;
+    private Date fch;
+    private String place;
 
     public Principal() {
         initComponents();
@@ -281,6 +294,8 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/icono.png"))); // NOI18N
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, -10, 520, 620));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
         getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 640));
 
         pack();
@@ -288,64 +303,80 @@ public class Principal extends javax.swing.JFrame {
 
     private void registroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroActionPerformed
 
-        if (estudiante.getText() == "") {
+        if (!estudiante.getText().equals("") || !codigo.getText().equals("") || !acudiente.getText().equals("")
+                || !phoneText.getText().equals("") || !barrio.getText().equals("")) {
+            try {
+                name = estudiante.getText();
+                code = Integer.parseInt(codigo.getText());
+                parent = acudiente.getText();
+                telphone = Long.parseLong(phoneText.getText());
+                home = barrio.getText();
+                String amanece = manana.getSelectedItem().toString();
+                switch (amanece) {
+                    case "5:30":
+                        am = 530;
+                        break;
+                    case "6:30":
+                        am = 630;
+                        break;
+                    case "Ninguno":
+                        am = 0;
+                        break;
+                    default:
+                        break;
+                }
+                String atardece = after.getSelectedItem().toString();
+                switch (atardece) {
+                    case "1:30":
+                        pm = 130;
+                        break;
+                    case "2:30":
+                        pm = 230;
+                        break;
+                    case "Ninguno":
+                        pm = 0;
+                        break;
+                    default:
+                        break;
+                }
+
+                for (Estudiante codes : base.queryForAll()) {
+                    if (code == codes.getCodigo()) {
+                        JOptionPane.showMessageDialog(null, "¡Este estudiante ya está registrado!");
+                    }
+                }
+
+                GregorianCalendar cl = new GregorianCalendar();
+                fch = cl.getTime();
+                place = cl.getTimeZone().getID();
+
+                Estudiante e = new Estudiante(name, code, parent, telphone, home, am, pm, fch, place);
+                //base.countOf() para contar cuantos hay en la base de datos
+
+                base.create(e);//ESTO ES PARA AGRAGAR EL NUEVO ESTUDIANTE A LA BASE DE DATOS
+
+                luces();
+
+                JOptionPane.showMessageDialog(
+                        null, "¡Nuevo estudiante registrado en la ruta!");
+                estudiante.setText(
+                        "");
+                codigo.setText(
+                        "");
+                acudiente.setText(
+                        "");
+                phoneText.setText(
+                        "");
+                //long1.setText("");
+                barrio.setText(
+                        "");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error");
+            } //EL TRY CATCH LO EXIGE EL base.create(e); POR SI SE GENERAN ERRORES
+        } else {
             JOptionPane.showMessageDialog(null, "¡Debes llenar todos los espacios!");
         }
-        try {
-            name = estudiante.getText();
-            code = Integer.parseInt(codigo.getText());
-            parent = acudiente.getText();
-            telphone = Long.parseLong(phoneText.getText());
-            home = barrio.getText();
-            String amanece = manana.getSelectedItem().toString();
-            switch (amanece) {
-                case "5:30":
-                    am = 530;
-                    break;
-                case "6:30":
-                    am = 630;
-                    break;
-                case "Ninguno":
-                    am = 0;
-                    break;
-                default:
-                    break;
-            }
-            String atardece = after.getSelectedItem().toString();
-            switch (atardece) {
-                case "1:30":
-                    pm = 130;
-                    break;
-                case "2:30":
-                    pm = 230;
-                    break;
-                case "Ninguno":
-                    pm = 0;
-                    break;
-                default:
-                    break;
-            }
 
-            for (Estudiante codes : base.queryForAll()) {
-                if (code == codes.getCodigo()) {
-                    JOptionPane.showMessageDialog(null, "¡Este estudiante ya está registrado!");
-                }
-            }
-
-            Estudiante e = new Estudiante(name, code, parent, telphone, home, am, pm);
-            //base.countOf() para contar cuantos hay en la base de datos
-            base.create(e);//ESTO ES PARA AGRAGAR EL NUEVO ESTUDIANTE A LA BASE DE DATOS
-            luces();
-            JOptionPane.showMessageDialog(null, "¡Nuevo estudiante registrado en la ruta!");
-            estudiante.setText("");
-            codigo.setText("");
-            acudiente.setText("");
-            phoneText.setText("");
-            //long1.setText("");
-            barrio.setText("");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error");
-        } //EL TRY CATCH LO EXIGE EL base.create(e); POR SI SE GENERAN ERRORES
     }//GEN-LAST:event_registroActionPerformed
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
@@ -364,8 +395,10 @@ public class Principal extends javax.swing.JFrame {
         try {
             int cuantos = (int) base.countOf();
             total = cuantos;
+
         } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         hide();
         Listas mostrar = new Listas();
@@ -393,7 +426,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_phoneTextActionPerformed
 
     private void registroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registroKeyPressed
-       
+
     }//GEN-LAST:event_registroKeyPressed
 
     public static void main(String args[]) throws SQLException {
@@ -403,20 +436,25 @@ public class Principal extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        String nombreArchivo = "jdbc:h2:./nuevaLista";
+        String nombreArchivo = "jdbc:h2:./listaCompleta";
         ConnectionSource conn = new JdbcConnectionSource(nombreArchivo);
         //estas dos lineas son las mismas de ArchivoEstidiante.class
         base = DaoManager.createDao(conn, Estudiante.class);
@@ -424,10 +462,12 @@ public class Principal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new Principal().setVisible(true);
             }
-        });
+        }
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

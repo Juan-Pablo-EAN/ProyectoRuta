@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ArchivoEstudiantes {
     public static void main(String[] args) throws SQLException {
-        String nombreArchivo = "jdbc:h2:./nuevaLista";
+        String nombreArchivo = "jdbc:h2:./listaCompleta";
         
         ConnectionSource conn = new JdbcConnectionSource(nombreArchivo);
         

@@ -23,13 +23,13 @@ public class ParaEliminar extends javax.swing.JFrame {
         this.setVisible(false);
         setSize(483, 311);
         
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        /*ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
         
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
         
         LabelFondo.setIcon(icono);
-        this.repaint();
+        this.repaint();*/
         
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
@@ -103,6 +103,8 @@ public class ParaEliminar extends javax.swing.JFrame {
         jLabel1.setText("Ruta 2020");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
         getContentPane().add(LabeLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 60, 60));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
         getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 310));
 
         pack();

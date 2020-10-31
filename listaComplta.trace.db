@@ -1,0 +1,16 @@
+2020-10-28 19:04:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "ESTUDIANTE" no encontrada
+Table "ESTUDIANTE" not found; SQL statement:
+SELECT COUNT(*) FROM `estudiante` [42102-200]
+2020-10-28 19:04:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "ESTUDIANTE" no encontrada
+Table "ESTUDIANTE" not found; SQL statement:
+SELECT * FROM `estudiante`  [42102-200]
+2020-10-28 19:04:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "ESTUDIANTE" no encontrada
+Table "ESTUDIANTE" not found; SQL statement:
+SELECT COUNT(*) FROM `estudiante` [42102-200]
+2020-10-28 19:04:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "ESTUDIANTE" no encontrada
+Table "ESTUDIANTE" not found; SQL statement:
+SELECT * FROM `estudiante`  [42102-200]

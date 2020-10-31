@@ -18,13 +18,13 @@ public class Cerrar extends javax.swing.JFrame {
         this.setVisible(false);
         setSize(420, 262);
 
-        ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
+        /*ImageIcon fondo = new ImageIcon("src/paquete/fondo.png");
 
         Icon icono = new ImageIcon(fondo.getImage().getScaledInstance(LabelFondo.getWidth(),
                 LabelFondo.getHeight(), Image.SCALE_DEFAULT));
 
         LabelFondo.setIcon(icono);
-        this.repaint();
+        this.repaint();*/
 
         ImageIcon logo = new ImageIcon("src/paquete/icono.png");
         Icon icono_logo = new ImageIcon(logo.getImage().getScaledInstance(LabeLogo.getWidth(),
@@ -80,6 +80,8 @@ public class Cerrar extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 164, 126, 48));
+
+        LabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paquete/fondo.png"))); // NOI18N
         getContentPane().add(LabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 270));
 
         pack();
